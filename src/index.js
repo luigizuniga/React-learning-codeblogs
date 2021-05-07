@@ -1,17 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+
+// Composicion de componentes
+function Padre(props) {
+  return(
+    <div className="padre">
+      <h1>{ "Componente Padre" }</h1>
+      <h3>{ "Functional Components" }</h3>
+        <div className="componentes">
+          <Hijo1 />
+          <Hijo2 />
+        </div>
+    </div>
+  );
+}
+
+
+// Extraccion de divisio de componetes
+// Componentes de Clase
+// ECMASCRIPT 6
+
+class Hijo1 extends React.Component{
+  render(){
+    return (
+      <div clasName="componente">
+        <h2>{ "Hijo 1" }</h2>
+        <h3>{ "Class Components" }</h3>
+        <p>{ "Contador" }</p>
+        <p>{ "1" }</p>
+      </div>
+        );
+    }
+}
+
+
+// Componentes Funcionales
+function Hijo2 (props){
+  return(
+    <div clasName="componente">
+      <h2>{ "Hijo 2" }</h2>
+      <h3>{ "Class  Components" }</h3>
+      <p>{ "Contador" }</p>
+      <p>{ "2" }</p>
+    </div>
+ );
+}
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Padre />,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
