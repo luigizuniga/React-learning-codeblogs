@@ -2,7 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// Propiedades
+// Propiedades, recordar que son de solo lectura para su modificacion se hace uso de los STATE
+// estas propiedades seran heredaras desde el metodo render
+
+const propiedades = {
+  hijo1:{
+    titulo:"Hijo 1",
+    subtitulo:"Contador (Componente Funcional)",
+    cuenta : 1
+  },
+  hijo2:{
+    titulo:"Hijo 2",
+    subtitulo:"Contador (Componente de Clase)",
+    cuenta : 10
+  }
+}
+
 // Extraccion de division de componetes
 // Hace referencias a que un componente lo puedes dividie en varios componentes hijos,
 // bajando la complejidad, diviendo un componente en varios subcomponentes.
@@ -38,31 +53,21 @@ class Hijo1 extends React.Component{
 // Composicion de componentes
 // Se refiere a que un componente puede estar compuesto a uno o mas componentes hijos (subcomponentes)
 function Padre(props) {
-  // uso de Propiedades
-
-  const propiedades = {
-    titulo:"Hijo 2",
-    subtitulo:"Contador (Componente Funcional)",
-    cuenta : 10
-  }
-
+  //Verificacion de las props (objeto json)
+  console.log(props)
   return(
     <div className="padre">
       <h1>{ "Componente Padre" }</h1>
       <h3>{ "Functional Components ( Padre )" }</h3>
         <div className="componentes">
-          <Hijo1
-              titulo="Hijo 1"
-              subtitulo="Contador (Class Componente)"
-              cuenta={ 1 } />
-              {/* uso de operador spreat para pasar las pripiedades desde el padre*/}
-          <Hijo2 {...propiedades}/>
+          <Hijo1 {...props.hijo1}/>
+          <Hijo2 {...props.hijo2}/>
         </div>
     </div>
   );
 }
 
 ReactDOM.render(
-    <Padre />,
+    <Padre {...propiedades}/>,
     document.getElementById('root')
 );
