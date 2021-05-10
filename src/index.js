@@ -3,24 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 
-// Composicion de componentes
-function Padre(props) {
-  return(
-    <div className="padre">
-      <h1>{ "Componente Padre" }</h1>
-      <h3>{ "Functional Components" }</h3>
-        <div className="componentes">
-          <Hijo1 />
-          <Hijo2 />
-        </div>
-    </div>
-  );
-}
+// Extraccion de division de componetes
+// Hace referencias a que un componente lo puedes dividie en varios componentes hijos,
+// bajando la complejidad, diviendo un componente en varios subcomponentes.
 
-
-// Extraccion de divisio de componetes
 // Componentes de Clase
-// ECMASCRIPT 6
+// Uso de ECMASCRIPT 6 para hacer uso de las clases
 
 class Hijo1 extends React.Component{
   render(){
@@ -35,8 +23,8 @@ class Hijo1 extends React.Component{
     }
 }
 
+// Componente Funcional , con uso de Extraccion
 
-// Componentes Funcionales
 function Hijo2 (props){
   return(
     <div clasName="componente">
@@ -48,6 +36,20 @@ function Hijo2 (props){
  );
 }
 
+// Composicion de componentes
+// Se refiere a que un componente puede estar compuesto a uno o mas componentes hijos (subcomponentes)
+function Padre(props) {
+  return(
+    <div className="padre">
+      <h1>{ "Componente Padre" }</h1>
+      <h3>{ "Functional Components" }</h3>
+        <div className="componentes">
+          <Hijo1 />
+          <Hijo2 />
+        </div>
+    </div>
+  );
+}
 
 ReactDOM.render(
     <Padre />,
