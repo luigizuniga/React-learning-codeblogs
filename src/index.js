@@ -13,8 +13,84 @@ let propiedades = {
     subtitulo: "Contador (Componente de Clase)",
     cuenta: 10
   }
-}
+};
 
+class Hijo1 extends React.Component {
+  // Declaracion del State - Fuera del Contructor
+  state={
+    titulo:"Hijo 1",
+    subtitulo:"Contador",
+    cuenta:1
+  }
+
+  constructor(props) {
+    super(props);
+    this.dismunuir = this.dismunuir.bind(this);
+    this.aumentar = this.aumentar.bind(this);
+    //#region Declaracion State - Opcional
+
+    /* Declaracion del state - Opcional dentro del Constructor
+     this.state = {
+     titulo:'Hijo 1',
+     subtitulo: 'Contador (Componente Funcional)',
+     cuenta: 1
+    */
+
+    //#endregion
+   }
+
+   //#region Metodos de Clase
+    /* Metodos de Clase
+     Declaracion de metodos que usara el State
+     * No heredan el this de la clase
+     * Para el uso de los metodos se hace uso de bind(this)
+     * Se recomienda utilozar arrow functional para los metodos
+     */
+    //#endregion
+
+  dismunuir(){
+    if(this.state.cuenta <= 0){
+      this.setState({
+        ...this.state,
+        cuenta:0
+      });
+    }else{
+      this.setState({
+        ...this.state,
+        cuenta:this.state.cuenta - 1
+      });
+    }
+  }
+
+  aumentar=()=>{
+    this.setState({
+      ...this.state,
+      cuenta: this.state.cuenta+1
+    });
+  }
+
+  render(){
+    return (
+      <div className="componente">
+        <h2>{this.state.titulo}</h2>
+        <h3>{this.state.subtitulo}</h3>
+        <div className="controles">
+          <span className="control" onClick={ this.dismunuir }>-</span>
+          <span className="control" onClick={ this.aumentar }>+</span>
+          {
+          //#region uso de SetState Opcionar
+          /* <span className="control" onClick={ ()=>{
+            this.state.cuenta++; // No realizar de esta manera utilizar setState
+            this.forceUpdate(); // Esto forza a la actualizacion del componente
+          }}>+</span> */
+            //#endregion
+          }
+        </div>
+        <p>{this.state.cuenta}</p>
+      </div>
+    );
+  }
+}
 
 function Hijo2(props) {
   // Declaracion de State - Componente Funcional
@@ -67,84 +143,6 @@ function Hijo2(props) {
   );
 }
 
-
-class Hijo1 extends React.Component {
-  // Declaracion del State - Fuera del Contructor
-  state = {
-    titulo:'Hijo 1',
-    subtitulo: 'Contador (Componente Funcional)',
-    cuenta: 1
-  };
-
-  constructor(props) {
-    super(props);
-    this.dismunuir = this.dismunuir.bind(this);
-    this.aumentar = this.aumentar.bind(this);
-    //#region Declaracion State - Opcional
-
-    /* Declaracion del state - Opcional dentro del Constructor
-     this.state = {
-     titulo:'Hijo 1',
-     subtitulo: 'Contador (Componente Funcional)',
-     cuenta: 1
-    */
-
-    //#endregion
-   }
-
-   //#region Metodos de Clase
-    /* Metodos de Clase
-     Declaracion de metodos que usara el State
-     * No heredan el this de la clase
-     * Para el uso de los metodos se hace uso de bind(this)
-     * Se recomienda utilozar arrow functional para los metodos
-     */
-    //#endregion
-
-  dismunuir(){
-    if(this.state.cuenta <= 0){
-      this.setState({
-        ...this.state,
-        cuenta: 0
-      })
-    }else{
-      this.setState({
-        ...this.state,
-        cuenta: this.state.cuenta-1
-      });
-    }
-  }
-
-  aumentar=()=>{
-    this.setState({
-      ...this.state,
-      cuenta: this.state.cuenta+1
-    });
-  }
-
-  render(){
-    return (
-      <div className="componente">
-        <h2>{this.state.titulo}</h2>
-        <h3>{this.state.subtitulo}</h3>
-        <div className="controles">
-          <span className="control" onClick={ this.dismunuir }>-</span>
-          <span className="control" onClick={ this.aumentar }>+</span>
-          {
-          //#region uso de SetState Opcionar
-          /* <span className="control" onClick={ ()=>{
-            this.state.cuenta++; // No realizar de esta manera utilizar setState
-            this.forceUpdate(); // Esto forza a la actualizacion del componente
-          }}>+</span> */
-            //#endregion
-          }
-        </div>
-        <p>{this.state.cuenta}</p>
-      </div>
-    );
-  }
-}
-
 function Padre(props) {
   console.log(props)
   return (
@@ -159,7 +157,84 @@ function Padre(props) {
   );
 }
 
+
+// #region Metodos del Ciclo de Vida
+/* componentDidMount
+ * componentWillUnmount
+
+Estos métodos nos permiten lanzar una acción al momento en que se monta un componente y otra acción cuando se desmonta.
+
+*/
+// #endregion
+
+class HijoLifeCycle extends React.Component {
+  state={
+    tituloH1: "Ciclo de Vida - DidMount and Unmount",
+    tituloH2: "Hijo 1",
+    subtitulo: "Contador (Componente Clase)",
+    cuenta: 1
+  }
+
+  intervalo = null;
+
+  /*Inicializa un intervalo después de que el componente es montado*/
+  componentDidMount(){
+    console.log("componentDidMount");
+    this.intervalo = setInterval(() => {
+      this.setState({
+        cuenta:this.state.cuenta + 1
+      });
+      console.log(this.state);
+    },1000)
+  }
+
+  /* Elimina el intervalo despues que el componente es desmontado*
+   * con esto no dejar porcesos en basura que consuman recursos innecesarios
+  */
+  componentWillUnmount(){
+    console.log("componentWillUnmount");
+    clearInterval(this.intervalo);
+  }
+
+  render(){
+    return(
+      <div className="componente">
+        <h1>{ this.state.tituloH1 }</h1>
+        <h2>{ this.state.tituloH2 }</h2>
+        <p>{ this.state.subtitulo }</p>
+      </div>
+    )
+  }
+}
+
+
+function PadreLifeCycle(props){
+  const [ ver, setVer ] = useState(false)
+  const verComponente =()=>{
+    setVer(!ver);
+  }
+
+  const title = "Componente Padre";
+  return(
+    <div className="padre">
+      <h1>{ title }</h1>
+     <button onClick={ verComponente }>
+       { ver ? "Ocultar" : "ver" }
+     </button>
+     <div className="componentes">
+      {
+        ver ? (<HijoLifeCycle />) : ("")
+      }
+     </div>
+    </div>
+  )
+
+}
+
+
+
 ReactDOM.render(
-  <Padre {...propiedades} />,
+  // <Padre {...propiedades} />,
+  <PadreLifeCycle {...propiedades } />,
   document.getElementById('root')
 );
